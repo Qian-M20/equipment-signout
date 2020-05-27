@@ -1,0 +1,894 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Site</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="dist/css/style.css">
+    <!-- link to font awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <section>
+      <header>
+        <div class="top-bar header">
+          <img src="./img/staffbanner.png" alt="logo">
+        </div>
+      </header>
+      
+      <div class="main-nav nav" id="example-menu">
+          <ul class="dropdown menu expanded" data-dropdown-menu>
+            <!-- <li class="menu-text">Site Title</li> -->
+            <li>
+              <a href="#">Borrowers</a>
+              <ul class="menu vertical">
+                <li><a class="tab" id="borrowers" href="#">Borrowers</a></li>
+                <li><a class="tab" id="passwords" href="#">Passwords</a></li>
+                <li><a class="tab" id="borrower_history" href="#">History</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="#">Assets</a>
+              <ul class="menu vertical">
+                <li><a class="tab" id="assets" href="#">Assets</a></li>
+                <li><a class="tab" id="reserve" href="#">Reserve</a></li>
+                <li><a class="tab" id="assets_history" href="#">History</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="#">SignOut</a>
+              <ul class="menu vertical">
+                <li><a class="tab" href="#" id="assets_logged_out">Assets Out</a></li>
+                <li><a class="tab" href="#" id="assets_overdue">Assets Overdue</a></li>
+                <li><a class="tab" href="#" id="assets_overdue_10_days">Overdue 10 Days</a></li>
+                <li><a class="tab" href="#" id="long_term_signout">Long Term SignOut</a></li>
+                <li><a class="tab" href="#" id="assets_export">Assets Export</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="#">Groups</a>
+              <ul class="menu vertical">
+                <li><a class="tab" id="groups" href="#">Groups</a></li>
+                <li><a class="tab" id="reserve_groups" href="#">Reserve Groups</a></li>
+              </ul>
+            </li>
+
+            <li class="singleTab"><a class="tab" id="print_history" href="#">Print History</a></li>
+
+            <li class="singleTab"><a class="tab" id="rooms" href="#">Rooms</a></li>
+
+            <li>
+              <a href="#">Inventory</a>
+              <ul class="menu vertical">
+                <li><a class="tab" id="inventory" href="#">Inventory</a></li>
+                <li><a class="tab" id="inventory_details"  href="#">Inventory Details</a></li>
+                <li><a class="tab" href="#" id="inventory_export">Inventory Export</a></li>
+              </ul>
+            </li>
+
+          </ul>
+      </div>
+
+      <main>
+        <div class="grid-container">
+          <div class="grid-x subpage borrowers">        
+            <h1>Borrowers</h1>
+            <form id="borrowers_form" action="index.html" method="post">
+              <p>
+                <label for=""></label>
+                <select name="" class="getBorrowersList">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+              </p>
+
+              <input type="button" class="priBtn getBorrowerBtn" value="Get">
+
+              <p>
+                  <label for="student_id">Student ID</label>
+                  <input type="text" name="student_id" id="br_student_id" value="" placeholder="123405453" maxlength="150">
+              </p>
+
+              <p>
+                <label for="first_name">First Name</label>
+                <input type="text" name="first_name" id="br_first_name" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="last_name">Last Name</label>
+                <input type="text" name="last_name" id="br_last_name" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="dc_mail">DC Email</label>
+                <input type="text" name="dc_email" id="br_dc_email" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="other_mail">Other EMail</label>
+                <input type="text" name="other_email" id="br_other_email" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="email_confirmation">Email Confirmation</label>
+                <input class="checkbox" type="checkbox" name="email_confirmation" id="email_confirmation" value='1'>
+              </p>
+
+
+              <p>
+                <label for="borrower_status">Borrower Status</label>
+                <select name="borrower_status" id="borrower_status">
+                    <option value=""></option>
+                    <option value="In Good Standing">In Good Standing</option>
+                    <option value="Restricted (next day 11am)">Restricted (next day 11am)</option>
+                    <option value="Restricted (same day 3pm)">Restricted (same day 3pm)</option>
+                    <option value="Loss of Borrowing Privileges">Loss of Borrowing Privileges</option>
+                </select>
+            </p>
+
+              <p>
+                  <label for="program_name">Program Name</label>
+                  <select name="program_name" id="program_name">
+                      <option value=""></option>
+                      <option id="Web_Design" value="1">Web Design</option>
+                      <option id="Interactive_Design" value="2">Interactive Design</option>
+                      <option id="Fine_Arts" value="3">Fine Arts</option>
+                  </select>
+              </p>
+
+
+              <p>
+                  <!-- setup for program_year -->
+                  <label for="program_year">Program Year</label>
+                  <select name="program_year" id="br_program_year">
+                      <option value=""></option>
+                      <option id="year1" value="1">1</option>
+                      <option id="year2" value="2">2</option>
+                      <option id="year3" value="3">3</option>
+                  </select>
+                </p>
+
+              
+                <p>
+                  <label for="phone">Phone</label>
+                  <input type="text" name="phone" id="br_phone" value="" placeholder="" maxlength="150">
+                </p>
+
+              <p class="submitGroup updateGroup">
+                <input class="priBtn updateBorrowerBtn" data-id="" type="button" name="submit" id="submit" value="Update">
+                <span class="updateErrMess"></span>
+                <input type="hidden" name="borrower_id" id="borrower_id" value="" >
+              </p>
+            </form>
+          </div>
+
+          <div class="grid-x subpage passwords">        
+            <h1>Passwords</h1>
+            <form id="password_form" action="index.html" method="post">
+              <p>
+                  <label for=""></label>
+                  <select name="" class="getBorrowersList2">
+                      <option value="0">---select---</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+              </p>
+
+              <input type="button" class="priBtn getPasswordBtn" value="Get">
+              <p>
+                  <label for="student_id">Student ID</label>
+                  <input type="text" name="student_id" id="psw_student_id" value="" placeholder="123405453" maxlength="150" readonly>
+              </p>
+
+              <p>
+                <label for="first_name">First Name</label>
+                <input type="text" name="first_name" id="psw_first_name" value="" placeholder="" maxlength="150" readonly>
+              </p>
+
+              <p>
+                <label for="last_name">Last Name</label>
+                <input type="text" name="last_name" id="psw_last_name" value="" placeholder="" maxlength="150" readonly>
+              </p>
+
+              <p class="psw-eye-span-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="borrower_password" value="" placeholder="" maxlength="150">
+                <span class="fa-eye-span"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+                <span class="fa-eye-span"><i class="fas fa-eye"></i></span>
+              </p>
+
+
+              <p class="submitGroup updateGroup">
+                <input class="priBtn updatePswBtn" data-id="" type="button" name="submit" id="submit" value="Update">
+                <span class="updateErrMess"></span>
+                <input type="hidden" name="password_id" id="password_id" value="" >
+              </p>
+
+            </form>
+          </div>
+
+          <div class="grid-x subpage borrower_history">        
+            <h1>Borrower History</h1>
+            <form id="borrower_history_form" action="index.html" method="post">
+              <p style="width:40%;">
+                  <select name="" class="getBorrowersList3" style="grid-column: 1/3;">
+                      <option value="0">---select---</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+              </p>
+              <input type="button" class="priBtn getBorrowerBtn_history" value="Get">
+              
+              <table id="borrower_history_table" class="tablegrid display" width="100%">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Asset Notes</th>
+                    <th>Serial Number</th>
+                    <th>Barcode</th>
+                    <th>Out Time</th>
+                    <th>In Time</th>
+                    <!-- <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Student ID</th>
+                    <th>DC Email</th>
+                    <th>Other Email</th> -->
+                  </tr>
+                </thead>
+              </table>
+            </form>
+          </div>
+
+          <div class="grid-x subpage assets">        
+            <h1>Assets</h1>
+            <form id="assets_form" action="index.html" method="post">
+              <p>
+                  <label for=""></label>
+                  <select name=""  class="getAssetsList">
+                      <option value="0">---select---</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+              </p>
+
+              <input type="button" class="priBtn getAssetBtn" value="Get">
+
+              <input type="button" class="secBtn addAssetBtn" value="Add Assets">
+
+              <p>
+                  <label for="barcode">Barcode</label>
+                  <input type="text" name="barcode" id="barcode" value="" placeholder="123405453" maxlength="150">
+              </p>
+
+              <p>
+                <label for="asset_desc">Asset Description</label>
+                <input type="text" name="asset_desc" id="asset_desc" value="" placeholder="" maxlength="150">
+              </p>
+
+              <!-- <p>
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="4" cols="50" name="notes"></textarea>
+              </p> -->
+
+              <p>
+                <label for="info">Info</label>
+                <textarea id="info" rows="4" cols="50" name="info"></textarea>
+
+                <!-- <input type="text" name="info" id="info" value="" placeholder="" maxlength="150"> -->
+              </p>
+
+              <p>
+                <label for="serial_number">Serial Number</label>
+                <input type="text" name="serial_number" id="serial_number" value="" placeholder="" maxlength="150">
+              </p>
+
+
+              <p>
+                <label for="actions">Actions</label>
+                <select name="actions" id="actions_list">
+                    <option id="" value="">------------------------Select the Action------------------------</option>
+                    <option id="" value="1">1</option>
+                    <option id="" value="2">2</option>
+                    <option id="" value="3">3</option>
+                    <option id="" value="4">4</option>
+                    <option id="" value="5">5</option>
+                </select>
+              </p>
+
+
+              <p>
+                <label for="categories">Category</label>
+                <select name="categories" id="categories_list">
+                    <option value="">------------------------Select the Category------------------------</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+              </p>
+
+
+              <p class="submitGroup updateGroup">
+                <input class="priBtn updateAssetBtn" data-id="" type="button" name="submit" id="submit" value="Update">
+                <span class="updateErrMess"></span>
+                <input type="hidden" name="asset_id" id="asset_id" value="">
+              </p>
+            </form>
+          </div>
+
+          <div class="grid-x subpage reserve">        
+            <h1>Reserve</h1>
+            
+            <form id="reserve_form" action="index.html" method="post">
+              <p>
+                <label for=""></label>
+                <select name=""  class="getReserveAssetList">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+              </p>
+
+              <input type="button" class="priBtn getReserveAssetBtn" value="Get">
+
+              <p>
+                  <label for="description">Description</label>
+                  <input type="text" name="assets_reserve_desc" id="assets_reserve_desc" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="reserve">Reserve</label>
+                <input type="number" name="reserve" id="assets_reserve" value="">
+              </p>
+
+              <p>
+                <label for="category">Category</label>
+                <select name="category" id="reserve_categories_list">
+                    <option id="" value="">---select---</option>
+                    <option id="" value="1">1</option>
+                    <option id="" value="2">2</option>
+                    <option id="" value="3">3</option>
+                </select>
+              </p>
+
+
+              <p>
+                <label for="reserve_notes">Notes</label>
+                <textarea id="reserve_notes" rows="4" cols="50" name="reserve_notes"></textarea>
+              </p>
+
+              <!-- <p>
+                <label for="reserve_notes">Notes</label>
+                <input type="text" name="reserve_notes" id="reserve_notes" value="" placeholder="" maxlength="150">
+              </p> -->
+
+              <p>
+                <label for="replacement_cost">Replacement Cost</label>
+                <input type="number" name="replacement_cost" id="replacement_cost" value="" step=".01">
+              </p>
+
+              <p class="submitGroup updateGroup">
+                <input class="priBtn" data-id="" type="button" name="submit" id="updateAssetReserveBtn" value="Update">
+                <span class="updateErrMess"></span>
+                <!-- <input type="hidden" name="borrower_id" id="borrower_id" value="" > -->
+              </p>
+            </form>
+            <table id="reserve_table" class="tablegrid display" width="100%">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Count</th>
+                  <th>Active</th>
+                  <th>Reserve</th>
+                  <th>Out</th>
+                  <th>Available</th>
+                  <th>Categories Name</th>
+                  <th>Notes</th>
+                  <th>Replacement Cost</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+
+          <div class="grid-x subpage assets_history">        
+            <h1>Assets History</h1>
+            <form id="assets_history_form" action="index.html" method="post">
+              <p style="width: 40%;">
+                  <select class="getAssetsList2" style="grid-column: 1/3;">
+                      <option value="0">---select---</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+              </p>
+              <input type="button" class="priBtn getAssetBtn_history" value="Get">
+              <!-- <input type="hidden" name="asset_barcode" id="asset_barcode" value="" > -->
+
+              <table id="assets_history_table" class="tablegrid display" width="100%">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <!-- <th>Serial</th> -->
+                    <th>Barcode</th>
+                    <th>Out</th>
+                    <th>Due</th>
+                    <th>In</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>ID</th>
+                    <th>DC</th>
+                    <th>Other</th>
+                  </tr>
+                </thead>
+              </table>
+            </form>
+          </div>
+
+          <div class="grid-x subpage assets_logged_out">        
+            <h1>Assets Logged Out</h1>
+            <form id="assets_logged_out_form" action="index.html" method="post">
+
+              <table id="assets_logged_out_table" class="tablegrid display" width="100%">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <!-- <th>Serial</th> -->
+                    <th>Barcode</th>
+                    <th>Out</th>
+                    <th>Due</th>
+                    <th>In</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>ID</th>
+                    <th>DC</th>
+                    <th>Other</th>
+                  </tr>
+                </thead>
+              </table>
+            </form>
+
+          </div>
+
+          <div class="grid-x subpage assets_overdue">        
+            <h1>Assets Overdue</h1>
+            <form id="assets_overdue_form" action="index.html" method="post">
+            
+
+              <table id="assets_overdue_table" class="tablegrid display" width="100%">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <!-- <th>Serial</th> -->
+                    <th>Barcode</th>
+                    <th>Out</th>
+                    <th>Due</th>
+                    <th>In</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>ID</th>
+                    <th>DC</th>
+                    <th>Other</th>
+                  </tr>
+                </thead>
+              </table>
+            </form>
+
+          </div>
+
+          <div class="grid-x subpage assets_overdue_10_days">        
+            <h1>Assets Overdue 10 Days</h1>
+            <form id="assets_overdue_10_days_form" action="index.html" method="post">
+
+              <table id="assets_overdue_10_days_table" class="tablegrid display" width="100%">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <!-- <th>Serial</th> -->
+                    <th>Barcode</th>
+                    <th>Out</th>
+                    <th>Due</th>
+                    <th>In</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>ID</th>
+                    <th>DC</th>
+                    <th>Other</th>
+                  </tr>
+                </thead>
+              </table>
+            </form>
+
+          </div>
+
+          <div class="grid-x subpage long_term_signout">        
+            <h1>Long Term Signout</h1>
+
+            <form id="long_term_signout_form" action="index.html" method="post">
+              <p>
+                <label for="studentOrStaff">Faculty/Staff</label>
+                <select name="faculty_id" class="getFacultyList">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+              </p>
+
+              <!-- <input type="button" class="priBtn" value="Get"> -->
+
+              <p>
+                <label for="assets">Asset</label>
+                <select name="asset_id" class="getAssetsList3">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <!-- <input type="button" class="priBtn" value="Get"> -->
+              </p>
+
+              <p>
+                <label for="signout_staff_id">Signout Staff ID</label>
+                <input type="text" name="signout_staff_id" id="signout_staff_id" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="signout_notes">Signout Notes</label>
+                <textarea id="signout_notes" rows="4" cols="50" name="signout_notes"></textarea>
+                <!-- <input type="text" name="signout_notes" id="signout_notes" value="" placeholder="" maxlength="150"> -->
+              </p>
+
+              <p>
+                <label for="calendar"></label>
+                <input type="date" class="calendar" name="calendar"/>
+              </p>
+
+              <p class="submitGroup updateGroup">
+                <input class="priBtn long_term_signout_Btn" data-id="" type="button" name="submit" id="submit" value="Long Term Signout">
+                <span class="updateErrMess"></span>
+
+                <!-- <input type="hidden" name="borrower_id" id="borrower_id" value="" > -->
+              </p>
+
+
+            </form>
+          </div>
+
+          <div class="grid-x subpage assets_export">        
+            <h1>Assets Export</h1>
+            <div>
+
+                <a class="priBtn dumpBtn" href="services/assets_out_excel.php">Dump</a>
+
+            </div>
+          </div>
+
+          <div class="grid-x subpage groups">        
+            <h1>Groups</h1>
+            <form id="groups_form" action="index.html" method="post">
+              <table id="groups_table" class="tablegrid display nowrap" width="100%">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Program</th>
+                    <th>Year</th>
+                  </tr>
+                </thead>
+              </table>
+              <!-- <p class="submitGroup saveGroup">
+                <input type="text" class="" name=""/>
+                <input class="priBtn" data-id="" type="button" name="submit" id="submit" value="Update">
+                <input type="hidden" name="borrower_id" id="borrower_id" value="" >
+              </p> -->
+            </form>
+          </div>
+
+          <div class="grid-x subpage reserve_groups">        
+            <h1>Reserve Groups</h1>
+            <form id="reserve_groups_form" action="index.html" method="post">
+              <div class="reserve_groups_tableGroup">
+                <select name="" id="groups_reserve_list">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <div>
+                  <input type="button" class="priBtn getGroupReserveBtn" value="Get">
+                </div>
+                <!-- <input type="hidden" name="borrower_id" id="borrower_id" value="" > -->
+              </div>
+
+                
+              
+              <div class="reserve_groups_tableGroup">
+                <div class="updateGroup">
+                  <table id="reserve_groups_table1" class="tablegrid display" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Program</th>
+                        <th>Year</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <input class="priBtn saveGroupReserveBtn" data-id="" type="button" name="submit" id="submit" value="Save">
+                  <span class="updateErrMess" style="color:tomato; font-weight:bolder;"></span>
+                </div>
+
+                <div>
+                  <table id="reserve_groups_table2" class="tablegrid display" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Program</th>
+                        <th>Year</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <input class='hiddenBtn' type="hidden">
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="grid-x subpage print_history">        
+            <h1>Print History</h1>
+
+            <form id="print_history_form" action="index.html" method="post">
+              <p class="getBorrowersListP">
+                <select class="getBorrowersList4">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <input type="button" class="priBtn getPrintHisBtn" value="Get">
+              </p>
+
+              <div class="sumTotal" style="font-size:1.5em; margin-bottom:1em; color:transparent;">Credit Available : $<span class="sumTotalAmount"></span></div>
+              <div class="print_history_tableGroup">
+                <div>
+                  <h4 style="color:#57593a;">Debit Funds <span class="debitAmount"></span></h4>
+                  <table id="print_history_table1" class="tablegrid display nowrap" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Dollar Amount</th>
+                        <th>Support ID</th>
+                      </tr>
+                    </thead>
+                  </table>
+              </div>
+
+              <div>
+                <h4 style="color:#57593a;">Credit Funds <span class="creditAmount"></span></h4>
+                <table id="print_history_table2" class="tablegrid display nowrap" width="100%">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Dollar Amount</th>
+                      <th>Support</th>
+                      <th>Invoice Id</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+
+            </form>
+          </div>
+
+          <div class="grid-x subpage rooms">        
+            <h1>Rooms</h1>
+            <form id="rooms_form" action="index.html" method="post">
+              <p>
+                <label for=""></label>
+                <select name="rooms" id="roomsList">
+                    <option value="0">---select---</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+              </p>
+
+              <input type="button" class="priBtn getRoomBtn" value="Get">
+
+              <input type="button" class="secBtn addRoomBtn" value="Add Rooms">
+
+
+
+              <!-- <input type="button" class="priBtn" value="New Room"> -->
+
+              <p>
+                  <label for="name">Name</label>
+                  <input type="text" name="room_name" id="room_name" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="description">Description</label>
+                <input type="text" name="room_desc" id="room_desc" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="bottom_notes">Bottom Notes</label>
+                <input type="text" name="bottom_notes" id="bottom_notes" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="block_size">Block Size</label>
+                <input type="text" name="block_size" id="block_size" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="block_start">Block Start</label>
+                <input type="text" name="block_start" id="block_start" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="nodb">Number Of Day Blocks</label>
+                <input type="text" name="nodb" id="nodb" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="restr_day">Restrictions Day</label>
+                <input type="text" name="restr_day" id="restr_day" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p>
+                <label for="restr_night">Restrictions Night</label>
+                <input type="text" name="restr_night" id="restr_night" value="" placeholder="" maxlength="150">
+              </p>
+
+              <p class="submitGroup updateGroup">
+                <input class="priBtn updateRoomBtn" data-id="" type="button" name="submit" value="Update">
+
+                <input type="button" class="secBtn deleteRoomBtn" value="Delete">
+
+                <span class="updateErrMess"></span>
+                <input type="hidden" name="room_id" id="room_id" value="" >
+              </p>
+            </form>
+          </div>
+
+          <div class="grid-x subpage inventory">        
+            <h1>Inventory</h1>
+            <form id="inventory_form" action="index.html" method="post">
+              <div class="sixGroup">
+                  <input type="text" class="barcodeEntry" value="">
+
+                  <input type="button" class="verifyBtn priBtn" value="verify Barcode">
+                
+                  <p class="inventGroup1">
+                    <input class="checkbox" type="checkbox" name="notInvent" id="notInvent" value='1'>
+                    <label for="notInvent">Not inventoried</label>
+                  </p>
+
+                  <p class="inventGroup2">
+                    <input class="checkbox" type="checkbox" name="active" id="active" value='1'>
+                    <label for="active">Active</label>
+                  </p>
+
+                  <!-- <input type="button" class="clearBtn secBtn" value="Dump"> -->
+
+                  <input type="button" class="startNewInventBtn terBtn" value="Start New Inventory">
+
+
+              </div>
+              
+              <div class="updateGroup">
+                  <span class="updateErrMess" style="color:tomato; font-weight:bolder;"></span>
+              </div>
+
+              <table id="inventory_table" class="tablegrid display" width="100%">
+                <thead>
+                  <tr>
+                    <th>Barcode</th>
+                    <th>Serial Number</th>
+                    <th>Asset</th>
+                    <th>Notes</th>
+                    <th>Out Date</th>
+                    <th>In Date</th>
+                    <th>Scan Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </table>
+            </form>
+          </div>
+
+          <div class="grid-x subpage inventory_details">        
+            <h1>Inventory Details</h1>
+            <form action="">
+              <p class="twoBtns">
+                <input type="button" class="priBtn refreshBtn" value="Refresh">
+                <!-- <input type="button" class="secBtn exportBtn" value="Export"> -->
+              </p>
+              <table id="invent_detail_table1" class="tablegrid display " width="100%">
+                <thead>
+                  <tr>
+                    <th style="font-size: 12px;">Description</th>
+                    <th style="font-size: 12px;">Category</th>
+                    <th style="font-size: 12px;">Notes</th>
+                    <th style="font-size: 12px;">Total</th>
+                    <th style="font-size: 12px;">Lost</th>
+                    <th style="font-size: 12px;">Repair</th>
+                    <th style="font-size: 12px;">Retired</th>
+                    <th style="font-size: 12px;">Do Not Display</th>
+                    <th style="font-size: 12px;">Active</th>
+                    <th style="font-size: 12px;">Reserve</th>
+                    <th style="font-size: 12px;">Signed Out</th>
+                    <th style="font-size: 12px;">Available</th>
+                    <th style="font-size: 12px;">Scanned</th>
+                  </tr>
+                </thead>
+              </table>
+              <table style="margin-top: 1.5em;" id="invent_detail_table2" class="tablegrid display " width="100%">
+                <thead>
+                  <tr>
+                    <th style="font-size: 12px;">Barcode</th>
+                    <th style="font-size: 12px;">Serial Number</th>
+                    <th style="font-size: 12px;">Category</th>
+                    <th style="font-size: 12px;">Action</th>
+                    <th style="font-size: 12px;">Notes</th>
+                    <th style="font-size: 12px;">Info</th>
+                    <th style="font-size: 12px;">Signed Out</th>
+                    <th style="font-size: 12px;">Borrower</th>
+                    <th style="font-size: 12px;">Scan Date</th>
+                  </tr>
+                </thead>
+              </table>
+          </form>
+          </div>
+
+          <div class="grid-x subpage inventory_export">        
+            <h1>Inventory Export</h1>
+            <div>
+                <a class="priBtn dumpBtn" href="services/inventory_export.php">Dump</a>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </section>
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/vendor/moment.js"></script>
+    <script src="js/data_tables.js"></script>
+    <script src="js/vendor/datatable-moment-plugin.js"></script>
+    <script src="js/dataTables.cellEdit.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
